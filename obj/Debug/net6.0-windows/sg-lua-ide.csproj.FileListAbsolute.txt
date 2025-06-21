@@ -1,0 +1,60 @@
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.csproj.AssemblyReference.cache
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.csproj.CoreCompileInputs.cache
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\Resources\AppIcon.ico
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\Resources\Logo.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\Resources\ToolbarIcons\NewFile.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\Resources\ToolbarIcons\OpenFile.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Run.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\Resources\ToolbarIcons\SaveFile.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\sg-lua-ide.exe
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\sg-lua-ide.deps.json
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\sg-lua-ide.runtimeconfig.json
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\sg-lua-ide.pdb
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\KeraLua.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\NLua.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\runtimes\linux-x64\native\liblua54.so
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\runtimes\osx\native\liblua54.dylib
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\runtimes\win-x64\native\lua54.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\bin\Debug\net6.0-windows\runtimes\win-x86\native\lua54.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.csproj.Up2Date
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\refint\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.pdb
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\sg-lua-ide.genruntimeconfig.cache
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide\obj\Debug\net6.0-windows\ref\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\AppIcon.ico
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\Logo.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\NewFile.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\OpenFile.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Run.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\SaveFile.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\sg-lua-ide.exe
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\sg-lua-ide.deps.json
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\sg-lua-ide.runtimeconfig.json
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\sg-lua-ide.pdb
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\KeraLua.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\NLua.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\runtimes\linux-x64\native\liblua54.so
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\runtimes\osx\native\liblua54.dylib
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\runtimes\win-x64\native\lua54.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\runtimes\win-x86\native\lua54.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.csproj.AssemblyReference.cache
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.csproj.CoreCompileInputs.cache
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.csproj.Up2Date
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\refint\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.pdb
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\sg-lua-ide.genruntimeconfig.cache
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\obj\Debug\net6.0-windows\ref\sg-lua-ide.dll
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Debug.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Terminal.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\NewFile_Light.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\OpenFile_Light.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Run_Light.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\SaveFile_Light.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Debug_Light.png
+C:\Users\dongf\Desktop\新建文件夹 (2)\sg-lua-ide v0.01\bin\Debug\net6.0-windows\Resources\ToolbarIcons\Terminal_Light.png

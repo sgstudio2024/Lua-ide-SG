@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "dgSpecHash": "+qpSnak6tOg=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dongf\\Desktop\\新建文件夹 (2)\\sg-lua-ide v0.01\\sg-lua-ide.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dongf\\.nuget\\packages\\keralua\\1.2.15\\keralua.1.2.15.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\nlua\\1.5.11\\nlua.1.5.11.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\system.drawing.common\\6.0.0\\system.drawing.common.6.0.0.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.36\\microsoft.netcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.36\\microsoft.windowsdesktop.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.36\\microsoft.aspnetcore.app.ref.6.0.36.nupkg.sha512",
+    "C:\\Users\\dongf\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.36\\microsoft.netcore.app.host.win-x64.6.0.36.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "sg-lua-ide depends on NLua (>= 1.5.10) but NLua 1.5.10 was not found. NLua 1.5.11 was resolved instead.",
+      "projectPath": "C:\\Users\\dongf\\Desktop\\新建文件夹 (2)\\sg-lua-ide v0.01\\sg-lua-ide.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\dongf\\Desktop\\新建文件夹 (2)\\sg-lua-ide v0.01\\sg-lua-ide.csproj",
+      "libraryId": "NLua",
+      "targetGraphs": [
+        "net6.0-windows7.0"
+      ]
+    }
+  ]
+}
