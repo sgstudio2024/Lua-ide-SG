@@ -26,7 +26,40 @@ namespace SG_Lua_IDE.Forms
             InitializeEditor();
             InitializeOutputRedirector();
             ApplyDarkTheme();
-            
+
+            // 标题栏按钮位置自适应
+            this.Resize += (s, e) =>
+            {
+                int btnWidth = 40;
+                if (btnMinimize != null && btnMaximize != null && btnClose != null)
+                {
+                    btnMinimize.Left = this.ClientSize.Width - btnWidth * 3;
+                    btnMaximize.Left = this.ClientSize.Width - btnWidth * 2;
+                    btnClose.Left = this.ClientSize.Width - btnWidth * 1;
+                }
+            };
+            // 初始化时也设置一次
+            int btnW = 40;
+            if (btnMinimize != null && btnMaximize != null && btnClose != null)
+            {
+                btnMinimize.Left = this.ClientSize.Width - btnW * 3;
+                btnMaximize.Left = this.ClientSize.Width - btnW * 2;
+                btnClose.Left = this.ClientSize.Width - btnW * 1;
+            }
+
+            // 支持无边框窗口拖动
+            if (titleBarPanel != null)
+            {
+                titleBarPanel.MouseDown += (s, e) =>
+                {
+                    if (e.Button == MouseButtons.Left)
+                    {
+                        NativeMethods.ReleaseCapture();
+                        NativeMethods.SendMessage(this.Handle, 0xA1, 0x2, 0);
+                    }
+                };
+            }
+
             // 设置应用程序标题和图标
             this.Text = $"{Program.AppName} v{Program.Version}";
             try
@@ -71,19 +104,17 @@ namespace SG_Lua_IDE.Forms
 
         private void ApplyDarkTheme()
         {
-            // 设置菜单样式
-            menuStrip.BackColor = Color.FromArgb(30, 30, 40);
+            // VSCode 深色风格
+            menuStrip.BackColor = Color.FromArgb(37, 37, 38);
             menuStrip.ForeColor = Color.White;
-            
-            // 设置工具栏样式
-            toolStrip.BackColor = Color.FromArgb(40, 40, 50);
+            toolStrip.BackColor = Color.FromArgb(37, 37, 38);
             toolStrip.ForeColor = Color.White;
-            
-            // 设置工具栏按钮图标
+            toolStrip.ImageScalingSize = new Size(32, 32);
+
+            // 工具栏图标
             try
             {
                 string resourcesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "ToolbarIcons");
-                
                 if (Directory.Exists(resourcesPath))
                 {
                     newToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "NewFile.png"));
@@ -94,23 +125,48 @@ namespace SG_Lua_IDE.Forms
                     terminalToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "Terminal.png"));
                 }
             }
-            catch
-            {
-                // 忽略图标加载错误
-            }
-            
-            // 设置输出框样式
-            txtOutput.BackColor = Color.FromArgb(25, 25, 35);
-            txtOutput.ForeColor = Color.LightGreen;
-            txtOutput.Font = new Font("Consolas", 10);
-            
-            // 设置分割线样式
-            splitContainer1.BackColor = Color.FromArgb(40, 40, 50);
-            
-            // 设置状态栏样式
-            statusStrip.BackColor = Color.FromArgb(40, 40, 50);
+            catch { /* 忽略图标加载错误 */ }
+
+            editor.BackColor = Color.FromArgb(30, 30, 34);
+            editor.ForeColor = Color.FromArgb(212, 212, 212);
+            editor.BorderStyle = BorderStyle.None;
+            txtOutput.BackColor = Color.FromArgb(25, 25, 28);
+            txtOutput.ForeColor = Color.FromArgb(130, 220, 130);
+            txtOutput.BorderStyle = BorderStyle.None;
+            // splitContainer1.BackColor = Color.FromArgb(37, 37, 38); // 删除此行
+            mainSplitContainer.BackColor = Color.FromArgb(37, 37, 38); // 新增
+            bottomSplitContainer.BackColor = Color.FromArgb(37, 37, 38); // 新增
+            statusStrip.BackColor = Color.FromArgb(37, 37, 38);
             statusStrip.ForeColor = Color.White;
             statusLabel.ForeColor = Color.White;
+
+            // 设置底部TabControl和各TabPage为深色
+            bottomTabControl.BackColor = Color.FromArgb(30, 30, 34);
+            bottomTabControl.ForeColor = Color.White;
+            tabPageProblems.BackColor = Color.FromArgb(30, 30, 34);
+            tabPageProblems.ForeColor = Color.White;
+            tabPageOutput.BackColor = Color.FromArgb(30, 30, 34);
+            tabPageOutput.ForeColor = Color.White;
+            tabPageDebug.BackColor = Color.FromArgb(30, 30, 34);
+            tabPageDebug.ForeColor = Color.White;
+            tabPageTerminal.BackColor = Color.FromArgb(30, 30, 34);
+            tabPageTerminal.ForeColor = Color.White;
+
+            // 终端输入区风格
+            terminalBox.BackColor = Color.FromArgb(30, 30, 34);
+            terminalBox.ForeColor = Color.LightGreen;
+            terminalBox.BorderStyle = BorderStyle.None;
+
+            // 标题栏按钮风格
+            btnMinimize.BackColor = Color.FromArgb(37, 37, 38);
+            btnMinimize.ForeColor = Color.White;
+            btnMaximize.BackColor = Color.FromArgb(37, 37, 38);
+            btnMaximize.ForeColor = Color.White;
+            btnClose.BackColor = Color.FromArgb(37, 37, 38);
+            btnClose.ForeColor = Color.White;
+
+            bottomStatusBar.BackColor = Color.FromArgb(25, 25, 28);
+            bottomStatusBar.ForeColor = Color.LightGray;
         }
 
         #region 文件操作
@@ -266,6 +322,7 @@ namespace SG_Lua_IDE.Forms
             {
                 _luaExecutor.Execute(editor.Text);
                 ShowStatusMessage("脚本执行完成");
+                ShowCompilerMessage("运行完成");
             }
             catch (Exception ex)
             {
@@ -569,34 +626,82 @@ namespace SG_Lua_IDE.Forms
         #region 终端功能
         private void NewTerminalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _terminalManager.OpenTerminal();
+            bottomTabControl.SelectedTab = tabPageTerminal;
+            terminalBox.Focus();
+            AppendTerminalText("新终端已打开。\n");
             ShowStatusMessage("打开新终端");
         }
 
         private void SplitTerminalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _terminalManager.SplitTerminal();
+            bottomTabControl.SelectedTab = tabPageTerminal;
+            terminalBox.Focus();
+            AppendTerminalText("拆分终端（模拟）。\n");
             ShowStatusMessage("拆分终端");
         }
 
         private void RunBuildTaskToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _terminalManager.RunBuildTask();
+            bottomTabControl.SelectedTab = tabPageTerminal;
+            terminalBox.Focus();
+            AppendTerminalText("运行生成任务...\n");
             ShowStatusMessage("运行生成任务");
         }
 
         private void RunActiveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bottomTabControl.SelectedTab = tabPageTerminal;
+            terminalBox.Focus();
             if (!string.IsNullOrEmpty(_fileManager.CurrentFilePath))
             {
-                _terminalManager.RunFile(_fileManager.CurrentFilePath);
+                AppendTerminalText($"运行文件: {_fileManager.CurrentFilePath}\n");
                 ShowStatusMessage("运行活动文件");
             }
             else
             {
+                AppendTerminalText("没有活动文件可运行。\n");
                 ShowStatusMessage("没有活动文件可运行");
             }
         }
+
+        // 输出、终端、调试控制台、问题Tab的切换和内容管理
+        // 你可以根据需要将调试输出和问题输出分别写入对应Tab
+
+        // 输出到“输出”Tab
+        private void AppendOutputText(string text)
+        {
+            if (txtOutput.InvokeRequired)
+            {
+                txtOutput.Invoke(new Action<string>(AppendOutputText), text);
+            }
+            else
+            {
+                txtOutput.AppendText(text);
+                txtOutput.SelectionStart = txtOutput.Text.Length;
+                txtOutput.ScrollToCaret();
+            }
+        }
+
+        // 输出到“终端”Tab
+        private void AppendTerminalText(string text)
+        {
+            if (terminalBox.InvokeRequired)
+            {
+                terminalBox.Invoke(new Action<string>(AppendTerminalText), text);
+            }
+            else
+            {
+                terminalBox.AppendText(text);
+                terminalBox.SelectionStart = terminalBox.Text.Length;
+                terminalBox.ScrollToCaret();
+            }
+        }
+
+        // 输出到“调试控制台”Tab（如需实现调试输出，建议添加一个RichTextBox debugConsoleBox到tabPageDebug）
+        // private void AppendDebugText(string text) { ... }
+
+        // 输出到“问题”Tab（如需实现问题列表，建议添加ListView或DataGridView到tabPageProblems）
+        // private void AddProblem(string message, int line, int column) { ... }
         #endregion
 
         #region 其他功能
@@ -608,14 +713,84 @@ namespace SG_Lua_IDE.Forms
         
         private void UpdateTitle()
         {
-            string fileName = string.IsNullOrEmpty(_fileManager.CurrentFilePath) 
-                ? "未命名" 
+            // 文件信息
+            string fileName = string.IsNullOrEmpty(_fileManager.CurrentFilePath)
+                ? "未打开文件"
                 : Path.GetFileName(_fileManager.CurrentFilePath);
-            
-            string modified = editor.Modified ? "*" : "";
-            string fileType = _fileManager.IsEncryptedFile ? "[加密]" : "";
-            
-            this.Text = $"{modified}{fileName} - {fileType}{Program.AppName} v{Program.Version}";
+            fileInfoLabel.Text = fileName;
+
+            // 语言
+            languageLabel.Text = "Lua";
+
+            // 文件格式
+            try
+            {
+                if (!string.IsNullOrEmpty(_fileManager.CurrentFilePath))
+                {
+                    using (var fs = File.OpenRead(_fileManager.CurrentFilePath))
+                    using (var reader = new StreamReader(fs, true))
+                    {
+                        reader.Peek(); // 触发自动检测
+                        formatLabel.Text = reader.CurrentEncoding.EncodingName;
+                    }
+                }
+                else
+                {
+                    formatLabel.Text = "UTF-8";
+                }
+            }
+            catch
+            {
+                formatLabel.Text = "未知";
+            }
+
+            // 编译器通知（可由其它方法设置）
+            // compilerLabel.Text = "";
+        }
+
+        private void UpdateBottomStatusBar()
+        {
+            // 文件信息
+            string fileName = string.IsNullOrEmpty(_fileManager.CurrentFilePath)
+                ? "未打开文件"
+                : Path.GetFileName(_fileManager.CurrentFilePath);
+            if (fileInfoLabel != null) fileInfoLabel.Text = fileName;
+
+            // 语言
+            if (languageLabel != null) languageLabel.Text = "Lua";
+
+            // 文件格式
+            try
+            {
+                if (!string.IsNullOrEmpty(_fileManager.CurrentFilePath))
+                {
+                    using (var fs = File.OpenRead(_fileManager.CurrentFilePath))
+                    using (var reader = new StreamReader(fs, true))
+                    {
+                        reader.Peek(); // 触发自动检测
+                        if (formatLabel != null)
+                            formatLabel.Text = reader.CurrentEncoding.EncodingName;
+                    }
+                }
+                else
+                {
+                    if (formatLabel != null) formatLabel.Text = "UTF-8";
+                }
+            }
+            catch
+            {
+                if (formatLabel != null) formatLabel.Text = "未知";
+            }
+
+            // 编译器通知（可由其它方法设置）
+            // compilerLabel.Text = "";
+        }
+
+        private void ShowCompilerMessage(string message)
+        {
+            if (compilerLabel != null)
+                compilerLabel.Text = message;
+            // 可加定时清空等逻辑
         }
         
         private void ShowStatusMessage(string message)
@@ -651,30 +826,37 @@ namespace SG_Lua_IDE.Forms
                 editor.ForeColor = SystemColors.WindowText;
                 txtOutput.BackColor = SystemColors.Window;
                 txtOutput.ForeColor = SystemColors.WindowText;
-                splitContainer1.BackColor = SystemColors.Control;
+                // splitContainer1.BackColor = SystemColors.Control; // 删除此行
+                mainSplitContainer.BackColor = SystemColors.Control; // 新增
+                bottomSplitContainer.BackColor = SystemColors.Control; // 新增
                 statusStrip.BackColor = SystemColors.Control;
                 statusStrip.ForeColor = SystemColors.ControlText;
                 statusLabel.ForeColor = SystemColors.ControlText;
                 
-                // 恢复默认图标
-                try
-                {
-                    string resourcesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "ToolbarIcons");
-                    
-                    if (Directory.Exists(resourcesPath))
-                    {
-                        newToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "NewFile_Light.png"));
-                        openToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "OpenFile_Light.png"));
-                        saveToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "SaveFile_Light.png"));
-                        runToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "Run_Light.png"));
-                        debugToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "Debug_Light.png"));
-                        terminalToolStripButton.Image = Image.FromFile(Path.Combine(resourcesPath, "Terminal_Light.png"));
-                    }
-                }
-                catch
-                {
-                    // 忽略图标加载错误
-                }
+                // 设置底部TabControl和各TabPage为浅色
+                bottomTabControl.BackColor = SystemColors.Control;
+                bottomTabControl.ForeColor = SystemColors.ControlText;
+                tabPageProblems.BackColor = SystemColors.Control;
+                tabPageProblems.ForeColor = SystemColors.ControlText;
+                tabPageOutput.BackColor = SystemColors.Control;
+                tabPageOutput.ForeColor = SystemColors.ControlText;
+                tabPageDebug.BackColor = SystemColors.Control;
+                tabPageDebug.ForeColor = SystemColors.ControlText;
+                tabPageTerminal.BackColor = SystemColors.Control;
+                tabPageTerminal.ForeColor = SystemColors.ControlText;
+
+                // 终端输入区风格
+                terminalBox.BackColor = SystemColors.Window;
+                terminalBox.ForeColor = SystemColors.WindowText;
+                terminalBox.BorderStyle = BorderStyle.None;
+
+                // 标题栏按钮风格
+                btnMinimize.BackColor = SystemColors.Control;
+                btnMinimize.ForeColor = SystemColors.ControlText;
+                btnMaximize.BackColor = SystemColors.Control;
+                btnMaximize.ForeColor = SystemColors.ControlText;
+                btnClose.BackColor = SystemColors.Control;
+                btnClose.ForeColor = SystemColors.ControlText;
             }
         }
         
@@ -690,5 +872,38 @@ namespace SG_Lua_IDE.Forms
                 MessageBoxIcon.Information);
         }
         #endregion
+
+        // 支持无边框窗口拖动
+        private static class NativeMethods
+        {
+            [System.Runtime.InteropServices.DllImport("user32.dll")]
+            public static extern bool ReleaseCapture();
+            [System.Runtime.InteropServices.DllImport("user32.dll")]
+            public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        }
+
+        private void BtnMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void BtnMaximize_Click(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Maximized)
+            {
+                this.WindowState = FormWindowState.Normal;
+                btnMaximize.Text = "🗖";
+            }
+            else
+            {
+                this.WindowState = FormWindowState.Maximized;
+                btnMaximize.Text = "🗗";
+            }
+        }
+
+        private void BtnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

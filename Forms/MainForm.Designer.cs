@@ -62,8 +62,10 @@ namespace SG_Lua_IDE.Forms
         private System.Windows.Forms.ToolStripButton debugToolStripButton;
         private System.Windows.Forms.ToolStripButton terminalToolStripButton;
         
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer mainSplitContainer;
+        private System.Windows.Forms.SplitContainer bottomSplitContainer;
         private System.Windows.Forms.RichTextBox editor;
+        private System.Windows.Forms.RichTextBox terminalBox;
         private System.Windows.Forms.TextBox txtOutput;
         
         private System.Windows.Forms.StatusStrip statusStrip;
@@ -71,6 +73,26 @@ namespace SG_Lua_IDE.Forms
         
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+
+        // ===== VSCode风格自定义标题栏 =====
+        private System.Windows.Forms.Panel titleBarPanel;
+        private System.Windows.Forms.Button btnMinimize;
+        private System.Windows.Forms.Button btnMaximize;
+        private System.Windows.Forms.Button btnClose;
+
+        // ===== 底部状态栏 =====
+        private System.Windows.Forms.StatusStrip bottomStatusBar;
+        private System.Windows.Forms.ToolStripStatusLabel fileInfoLabel;
+        private System.Windows.Forms.ToolStripStatusLabel languageLabel;
+        private System.Windows.Forms.ToolStripStatusLabel formatLabel;
+        private System.Windows.Forms.ToolStripStatusLabel compilerLabel;
+
+        // 新增底部TabControl用于输出区
+        private System.Windows.Forms.TabControl bottomTabControl;
+        private System.Windows.Forms.TabPage tabPageProblems;
+        private System.Windows.Forms.TabPage tabPageOutput;
+        private System.Windows.Forms.TabPage tabPageDebug;
+        private System.Windows.Forms.TabPage tabPageTerminal;
 
         protected override void Dispose(bool disposing)
         {
@@ -84,9 +106,15 @@ namespace SG_Lua_IDE.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+
+            // 先实例化所有控件（顺序很重要，先TabPage再TabControl）
+            this.fileInfoLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.languageLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.formatLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.compilerLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.bottomStatusBar = new System.Windows.Forms.StatusStrip();
+
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            
-            // 文件菜单
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,8 +123,6 @@ namespace SG_Lua_IDE.Forms
             this.exportAsLuaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 编辑菜单
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,15 +136,11 @@ namespace SG_Lua_IDE.Forms
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.commentLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commentBlockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 导航菜单
             this.navigateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToDefinitionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.goToReferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.goToLineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 调试菜单
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stopDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -126,24 +148,16 @@ namespace SG_Lua_IDE.Forms
             this.stepOverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepIntoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stepOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 终端菜单
             this.terminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTerminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitTerminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.runBuildTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runActiveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 主题菜单
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toggleThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 帮助菜单
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            
-            // 工具栏
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -151,20 +165,83 @@ namespace SG_Lua_IDE.Forms
             this.runToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.debugToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.terminalToolStripButton = new System.Windows.Forms.ToolStripButton();
-            
-            // 主容器
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.bottomSplitContainer = new System.Windows.Forms.SplitContainer();
             this.editor = new System.Windows.Forms.RichTextBox();
+            this.terminalBox = new System.Windows.Forms.RichTextBox();
             this.txtOutput = new System.Windows.Forms.TextBox();
-            
-            // 状态栏
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            
-            // 对话框
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            
+            this.titleBarPanel = new System.Windows.Forms.Panel();
+            this.btnMinimize = new System.Windows.Forms.Button();
+            this.btnMaximize = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+
+            // ===== VSCode风格自定义标题栏 =====
+            this.titleBarPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.titleBarPanel.Height = 35;
+            this.titleBarPanel.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.titleBarPanel.Controls.Clear();
+
+            // ====== 标题栏按钮尺寸参数 ======
+            int titleBarButtonWidth = 22;
+            int titleBarButtonHeight = 22;
+            float titleBarButtonFontSize = 8f;
+
+            // 菜单栏字体和高度加大
+            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.menuStrip.ForeColor = System.Drawing.Color.White;
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.menuStrip.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
+            this.menuStrip.Height = 40;
+            this.menuStrip.Font = new System.Drawing.Font("Segoe UI", 10f, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134))); // 更大字体
+
+            // 菜单项字体加大
+            foreach (System.Windows.Forms.ToolStripMenuItem item in this.menuStrip.Items)
+            {
+                item.Font = new System.Drawing.Font("Segoe UI", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            }
+
+            // 标题栏按钮更大，便于统一调整
+            this.btnMinimize.Size = new System.Drawing.Size(titleBarButtonWidth, titleBarButtonHeight);
+            this.btnMinimize.Font = new System.Drawing.Font("Segoe UI Symbol", titleBarButtonFontSize, System.Drawing.FontStyle.Bold);
+            this.btnMinimize.ForeColor = System.Drawing.Color.White;
+            this.btnMinimize.BackColor = System.Drawing.Color.FromArgb(37, 37, 38);
+            this.btnMinimize.TabStop = false;
+
+            this.btnMaximize.Size = new System.Drawing.Size(titleBarButtonWidth, titleBarButtonHeight);
+            this.btnMaximize.Font = new System.Drawing.Font("Segoe UI Symbol", titleBarButtonFontSize, System.Drawing.FontStyle.Bold);
+            this.btnMaximize.ForeColor = System.Drawing.Color.White;
+            this.btnMaximize.BackColor = System.Drawing.Color.FromArgb(37, 37, 38);
+            this.btnMaximize.TabStop = false;
+
+            this.btnClose.Size = new System.Drawing.Size(titleBarButtonWidth, titleBarButtonHeight);
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI Symbol", titleBarButtonFontSize, System.Drawing.FontStyle.Bold);
+            this.btnClose.ForeColor = System.Drawing.Color.White;
+            this.btnClose.BackColor = System.Drawing.Color.FromArgb(37, 37, 38);
+            this.btnClose.TabStop = false;
+
+            // 菜单栏和按钮布局
+            this.menuStrip.Left = 0;
+            this.menuStrip.Top = 0;
+            this.menuStrip.Height = 32;
+
+            this.btnClose.Top = 0;
+            this.btnMaximize.Top = 0;
+            this.btnMinimize.Top = 0;
+
+            // 右侧按钮位置动态调整（在 MainForm.cs 构造函数已处理）
+
+            // 添加到标题栏
+            this.titleBarPanel.Controls.Add(this.menuStrip);
+            this.titleBarPanel.Controls.Add(this.btnMinimize);
+            this.titleBarPanel.Controls.Add(this.btnMaximize);
+            this.titleBarPanel.Controls.Add(this.btnClose);
+
             // menuStrip
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
                 this.fileToolStripMenuItem,
@@ -192,7 +269,7 @@ namespace SG_Lua_IDE.Forms
             });
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.fileToolStripMenuItem.Text = "文件";
+            this.fileToolStripMenuItem.Text = "文件(&F)"; // 添加快捷键F
             
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
@@ -247,7 +324,7 @@ namespace SG_Lua_IDE.Forms
             });
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.editToolStripMenuItem.Text = "编辑";
+            this.editToolStripMenuItem.Text = "编辑(&E)"; // 添加快捷键E
             
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
@@ -321,7 +398,7 @@ namespace SG_Lua_IDE.Forms
             });
             this.navigateToolStripMenuItem.Name = "navigateToolStripMenuItem";
             this.navigateToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.navigateToolStripMenuItem.Text = "导航";
+            this.navigateToolStripMenuItem.Text = "导航(&S)"; // 添加快捷键S
             
             this.goToDefinitionToolStripMenuItem.Name = "goToDefinitionToolStripMenuItem";
             this.goToDefinitionToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F12;
@@ -355,7 +432,7 @@ namespace SG_Lua_IDE.Forms
             });
             this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
             this.debugToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.debugToolStripMenuItem.Text = "调试";
+            this.debugToolStripMenuItem.Text = "调试(&D)"; // 添加快捷键D
             
             this.startDebugToolStripMenuItem.Name = "startDebugToolStripMenuItem";
             this.startDebugToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
@@ -465,108 +542,216 @@ namespace SG_Lua_IDE.Forms
             });
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip";
-            this.toolStrip.Size = new System.Drawing.Size(800, 25);
+            this.toolStrip.Size = new System.Drawing.Size(800, 40); // 高度加大
             this.toolStrip.TabIndex = 1;
-            
+            this.toolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden; // 隐藏拖动柄
+            this.toolStrip.BackColor = System.Drawing.Color.FromArgb(37, 37, 38); // VSCode 深色
+            this.toolStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.toolStrip.ImageScalingSize = new System.Drawing.Size(32, 32); // 图标更大
+
+            // 工具栏按钮样式
             this.newToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.newToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.newToolStripButton.Name = "newToolStripButton";
-            this.newToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.newToolStripButton.Text = "新建";
+            this.newToolStripButton.Size = new System.Drawing.Size(36, 36); // 更大
+            this.newToolStripButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.newToolStripButton.ToolTipText = "新建";
             this.newToolStripButton.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
-            
+
             this.openToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.openToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openToolStripButton.Name = "openToolStripButton";
-            this.openToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.openToolStripButton.Text = "打开";
+            this.openToolStripButton.Size = new System.Drawing.Size(36, 36);
+            this.openToolStripButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.openToolStripButton.ToolTipText = "打开";
             this.openToolStripButton.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
-            
+
             this.saveToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.saveToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveToolStripButton.Name = "saveToolStripButton";
-            this.saveToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.saveToolStripButton.Text = "保存";
+            this.saveToolStripButton.Size = new System.Drawing.Size(36, 36);
+            this.saveToolStripButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.saveToolStripButton.ToolTipText = "保存";
             this.saveToolStripButton.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
-            
+
             this.runToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.runToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runToolStripButton.Name = "runToolStripButton";
-            this.runToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.runToolStripButton.Text = "运行";
+            this.runToolStripButton.Size = new System.Drawing.Size(36, 36);
+            this.runToolStripButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.runToolStripButton.ToolTipText = "运行";
             this.runToolStripButton.Click += new System.EventHandler(this.RunButton_Click);
-            
+
             this.debugToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.debugToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.debugToolStripButton.Name = "debugToolStripButton";
-            this.debugToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.debugToolStripButton.Text = "调试";
+            this.debugToolStripButton.Size = new System.Drawing.Size(36, 36);
+            this.debugToolStripButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.debugToolStripButton.ToolTipText = "调试";
             this.debugToolStripButton.Click += new System.EventHandler(this.DebugButton_Click);
-            
+
             this.terminalToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.terminalToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.terminalToolStripButton.Name = "terminalToolStripButton";
-            this.terminalToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.terminalToolStripButton.Text = "终端";
+            this.terminalToolStripButton.Size = new System.Drawing.Size(36, 36);
+            this.terminalToolStripButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.terminalToolStripButton.ToolTipText = "终端";
             this.terminalToolStripButton.Click += new System.EventHandler(this.NewTerminalToolStripMenuItem_Click);
             
-            // 主容器
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 49);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            
-            this.splitContainer1.Panel1.Controls.Add(this.editor);
-            this.splitContainer1.Panel2.Controls.Add(this.txtOutput);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 401);
-            this.splitContainer1.SplitterDistance = 300;
-            this.splitContainer1.TabIndex = 2;
-            
-            this.editor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.editor.Location = new System.Drawing.Point(0, 0);
-            this.editor.Name = "editor";
-            this.editor.Size = new System.Drawing.Size(800, 300);
-            this.editor.TabIndex = 0;
-            this.editor.Text = "";
-            this.editor.TextChanged += new System.EventHandler(this.Editor_TextChanged);
-            
+            // 新增底部TabControl及各TabPage
+            this.bottomTabControl = new System.Windows.Forms.TabControl();
+            this.tabPageProblems = new System.Windows.Forms.TabPage();
+            this.tabPageOutput = new System.Windows.Forms.TabPage();
+            this.tabPageDebug = new System.Windows.Forms.TabPage();
+            this.tabPageTerminal = new System.Windows.Forms.TabPage();
+
+            // bottomTabControl
+            this.bottomTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bottomTabControl.TabPages.Add(this.tabPageProblems);
+            this.bottomTabControl.TabPages.Add(this.tabPageOutput);
+            this.bottomTabControl.TabPages.Add(this.tabPageDebug);
+            this.bottomTabControl.TabPages.Add(this.tabPageTerminal);
+            this.bottomTabControl.SelectedIndex = 1; // 默认选中“输出”
+            // 深色主题
+            this.bottomTabControl.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.bottomTabControl.ForeColor = System.Drawing.Color.White;
+
+            // tabPageProblems
+            this.tabPageProblems.Text = "问题";
+            this.tabPageProblems.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.tabPageProblems.ForeColor = System.Drawing.Color.White;
+            // 可添加ListView或DataGridView用于显示问题
+            // this.tabPageProblems.Controls.Add(...);
+
+            // tabPageOutput
+            this.tabPageOutput.Text = "输出";
+            this.tabPageOutput.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.tabPageOutput.ForeColor = System.Drawing.Color.White;
+            this.tabPageOutput.Controls.Add(this.txtOutput);
+
+            // tabPageDebug
+            this.tabPageDebug.Text = "调试控制台";
+            this.tabPageDebug.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.tabPageDebug.ForeColor = System.Drawing.Color.White;
+            // 可添加调试输出控件
+            // this.tabPageDebug.Controls.Add(...);
+
+            // tabPageTerminal
+            this.tabPageTerminal.Text = "终端";
+            this.tabPageTerminal.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.tabPageTerminal.ForeColor = System.Drawing.Color.White;
+            this.tabPageTerminal.Controls.Add(this.terminalBox);
+
+            // mainSplitContainer
+            this.mainSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.mainSplitContainer.SplitterDistance = 300;
+            this.mainSplitContainer.Name = "mainSplitContainer";
+            this.mainSplitContainer.Panel1.Controls.Add(this.editor);
+            this.mainSplitContainer.Panel2.Controls.Add(this.bottomTabControl);
+
+            // bottomSplitContainer
+            this.bottomSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.bottomSplitContainer.Orientation = System.Windows.Forms.Orientation.Vertical;
+            this.bottomSplitContainer.SplitterDistance = 400;
+            this.bottomSplitContainer.Name = "bottomSplitContainer";
+            this.bottomSplitContainer.Panel1.Controls.Add(this.terminalBox);
+            this.bottomSplitContainer.Panel2.Controls.Add(this.txtOutput);
+
+            // txtOutput
             this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtOutput.Location = new System.Drawing.Point(0, 0);
             this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
             this.txtOutput.ReadOnly = true;
             this.txtOutput.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtOutput.Size = new System.Drawing.Size(800, 97);
             this.txtOutput.TabIndex = 0;
-            
-            // 状态栏
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                this.statusLabel
-            });
-            this.statusStrip.Location = new System.Drawing.Point(0, 450);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip.TabIndex = 3;
-            
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(32, 17);
-            this.statusLabel.Text = "就绪";
-            
-            // 对话框
-            this.openFileDialog.Filter = "SG-Lua 工程文件 (*.sglua)|*.sglua|Lua 脚本文件 (*.lua)|*.lua|所有文件 (*.*)|*.*";
-            this.saveFileDialog.Filter = "SG-Lua 工程文件 (*.sglua)|*.sglua|Lua 脚本文件 (*.lua)|*.lua";
-            
+
+            // terminalBox 允许输入，按钮风格与主题一致
+            this.terminalBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.terminalBox.ReadOnly = false;
+            this.terminalBox.BackColor = System.Drawing.Color.FromArgb(30, 30, 34);
+            this.terminalBox.ForeColor = System.Drawing.Color.LightGreen;
+            this.terminalBox.Font = new System.Drawing.Font("Consolas", 10F);
+            this.terminalBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.terminalBox.Name = "terminalBox";
+
+            // 编辑器和终端字体加大
+            this.editor.Font = new System.Drawing.Font("Consolas", 15F);
+            this.terminalBox.Font = new System.Drawing.Font("Consolas", 15F);
+
             // 主窗体
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 472);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(800, 520);
+            this.Controls.Add(this.mainSplitContainer);
             this.Controls.Add(this.toolStrip);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.menuStrip);
+            this.Controls.Add(this.titleBarPanel);
+            this.Controls.Add(this.bottomStatusBar);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "SG-Lua IDE";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None; // 无边框
+            this.BackColor = System.Drawing.Color.FromArgb(30, 30, 34); // VSCode 深色
+
+            // ====== 圆角主窗体 ======
+            this.Load += (s, e) =>
+            {
+                int radius = 12; // 圆角半径
+                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+                path.StartFigure();
+                path.AddArc(new System.Drawing.Rectangle(0, 0, radius, radius), 180, 90);
+                path.AddArc(new System.Drawing.Rectangle(this.Width - radius, 0, radius, radius), 270, 90);
+                path.AddArc(new System.Drawing.Rectangle(this.Width - radius, this.Height - radius, radius, radius), 0, 90);
+                path.AddArc(new System.Drawing.Rectangle(0, this.Height - radius, radius, radius), 90, 90);
+                path.CloseFigure();
+                this.Region = new System.Drawing.Region(path);
+            };
+            this.Resize += (s, e) =>
+            {
+                int radius = 12;
+                System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+                path.StartFigure();
+                path.AddArc(new System.Drawing.Rectangle(0, 0, radius, radius), 180, 90);
+                path.AddArc(new System.Drawing.Rectangle(this.Width - radius, 0, radius, radius), 270, 90);
+                path.AddArc(new System.Drawing.Rectangle(this.Width - radius, this.Height - radius, radius, radius), 0, 90);
+                path.AddArc(new System.Drawing.Rectangle(0, this.Height - radius, radius, radius), 90, 90);
+                path.CloseFigure();
+                this.Region = new System.Drawing.Region(path);
+            };
+
+            // ====== VSCode风格LOGO按钮 ======
+            System.Windows.Forms.PictureBox logoBox = new System.Windows.Forms.PictureBox();
+            logoBox.Image = System.Drawing.Icon.ExtractAssociatedIcon("Resources\\AppIcon.ico").ToBitmap();
+            logoBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            logoBox.Size = new System.Drawing.Size(28, 28);
+            logoBox.Location = new System.Drawing.Point(6, 3);
+            logoBox.BackColor = System.Drawing.Color.Transparent;
+            logoBox.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            logoBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            logoBox.Click += (s, e) => { /* 可自定义点击事件 */ };
+
+            // 菜单栏左移，留出logo空间
+            this.menuStrip.Left = logoBox.Right + 4;
+            this.menuStrip.Top = 0;
+            this.menuStrip.Height = 32;
+
+            // 添加到标题栏（logo最左，菜单栏右移）
+            this.titleBarPanel.Controls.Add(logoBox);
+            this.titleBarPanel.Controls.Add(this.menuStrip);
+            this.titleBarPanel.Controls.Add(this.btnMinimize);
+            this.titleBarPanel.Controls.Add(this.btnMaximize);
+            this.titleBarPanel.Controls.Add(this.btnClose);
+
+            // 标题栏按钮属性
+            this.btnMinimize.Text = "🗕";
+            this.btnMaximize.Text = "🗖";
+            this.btnClose.Text = "🗙";
+
+            // 标题栏按钮事件绑定（确保事件绑定在这里）
+            this.btnMinimize.Click += new System.EventHandler(this.BtnMinimize_Click);
+            this.btnMaximize.Click += new System.EventHandler(this.BtnMaximize_Click);
+            this.btnClose.Click += new System.EventHandler(this.BtnClose_Click);
         }
     }
 }
