@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using SG_Lua_IDE.Forms;
 
 namespace SG_Lua_IDE
@@ -10,14 +11,35 @@ namespace SG_Lua_IDE
     {
         public static string AppName = "SG-Lua IDE";
         public static string Version = "1.1.0";
-        
+
+        private static void LoadAppInfo()
+        {
+            try
+            {
+                var xml = XDocument.Load("AppInfo.xml");
+                var root = xml.Element("AppInfo");
+                if (root != null)
+                {
+                    var name = root.Element("Name")?.Value;
+                    var version = root.Element("Version")?.Value;
+                    if (!string.IsNullOrWhiteSpace(name)) AppName = name;
+                    if (!string.IsNullOrWhiteSpace(version)) Version = version;
+                }
+            }
+            catch
+            {
+                // 忽略读取错误，使用默认值
+            }
+        }
+
         [STAThread]
         static void Main()
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
+            LoadAppInfo();
             // 设置应用程序信息
             var assembly = Assembly.GetExecutingAssembly();
             var titleAttribute = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
